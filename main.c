@@ -6,44 +6,38 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 14:57:18 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/15 17:29:56 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/15 21:49:39 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-void	my_strerror(char *message)
-{
-	printf("%s %s\n", "Error: ", message);
-	exit(1);
-}
 
 void	init_all(t_all *all, int argc, char *argv[])
 {
 	int	i;
 
 	if (argc < 5)
-		my_strerror("count of argument\n");
-	all->number_of_philo = atoi_time(argv[1]);
+		my_strerror("count of argument");
+	//all = (t_all *)malloc(sizeof(t_all *));
+	all->number_of_philo = my_atoi(argv[1]);
 	all->time_to_die = atoi_time(argv[2]);
 	all->time_to_eat = atoi_time(argv[3]);
 	all->time_to_sleep = atoi_time(argv[4]);
 	all->n_eat = (int *)malloc(sizeof(int) * (argc - 5));
 	if (!(all->n_eat))
-		my_strerror("malloc\n");
+		my_strerror("malloc");
 	i = 4;
-	while(argv[++i])
+	while(++i < argc)
 		all->n_eat[i] = my_atoi(argv[i]);
+	g_number_of_philo = all->number_of_philo;
 }
 
-void	create_philosophers(t_all	*all)
+void	create_philosophers(t_all *all)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)malloc(sizeof(t_philo) * all->number_of_philo);
+	philo = (t_philo *)malloc(sizeof(t_philo) * (all->number_of_philo + 1));
 	g_forks = (mutex_t *)malloc(sizeof(mutex_t) * all->number_of_philo);
 	if (!philo || !g_forks)
-		my_strerror("malloc\n");
+		my_strerror("malloc");
 	int i = -1;
 	while (++i < all->number_of_philo)
 	{
@@ -60,14 +54,18 @@ void	create_philosophers(t_all	*all)
 			philo[i].first_fork = g_forks[index_fork1];
 			philo[i].second_fork = g_forks[index_fork2];
 		}
+		philo[i].time_to_die = all->time_to_die;
+		philo[i].time_to_eat = all->time_to_eat;
+		philo[i].time_to_sleep = all->time_to_sleep;
 	}
 }
 
 int	main(int argc, char *argv[])
 {
-	t_all	*all;
+	t_all	all;
 	
-	init_all(all, argc, argv);
-	create_philosophers(all);
-	
+	init_all(&all, argc, argv);
+	create_philosophers(&all);
+	run_life_of_philosophers();
+	return (0);
 }

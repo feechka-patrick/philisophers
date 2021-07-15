@@ -6,11 +6,18 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 15:22:06 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/15 17:21:33 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/15 21:17:52 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static int	ft_isdigit(char c)
+{
+	if (c <= '9' && c >= '0')
+		return (1);
+	return (0);
+}
 
 int	my_atoi(const char *nptr)
 {
