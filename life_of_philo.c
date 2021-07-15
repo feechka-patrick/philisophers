@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 16:33:40 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/15 22:02:06 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/15 22:09:20 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@ mls_t	get_current_time(void)
 	struct timeval	current_time;
 	mls_t	timestamp; //milliseconds
 
-	gettimeofday(&current_time, NULL);
-	
-	// pthread_mutex_lock(&g_print);
-	// printf("%ld\n", current_time.tv_sec);
-	// pthread_mutex_unlock(&g_print);
-	
+	gettimeofday(&current_time, NULL);	
 	timestamp = current_time.tv_sec * 1000 + current_time.tv_usec / 1000;
 	return (timestamp);
 }
@@ -76,6 +71,7 @@ void	*check_death(void *ptr)
 				mls_t	timestamp = get_current_time() - g_time_of_begin;;
 				pthread_mutex_lock(&g_print);
 				printf("%ld: number %d %s\n", timestamp, i + 1, "is die");
+				//free
 				exit(1);
 			}
 		}
