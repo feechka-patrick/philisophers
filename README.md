@@ -1,8 +1,6 @@
 # philosophers
 make : gcc *.c -pthread -o philo
 
-run : ./philo 
-
 test : 
   - Test with ./philo 1 800 200 200, the philosopher should not eat and should die
   - Test with ./philo 5 800 200 200, no one should die
