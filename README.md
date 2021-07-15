@@ -1,5 +1,5 @@
 # philosophers
-make : gcc *.c -pthread -o philo
+make : gcc *.c -pthread -o philo\n
 run : ./philo 
 
 test : 
