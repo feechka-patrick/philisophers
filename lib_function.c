@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 15:22:06 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/15 21:17:52 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/16 17:57:23 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	my_atoi(const char *nptr)
 	return ((int)(result * sign));
 }
 
-useconds_t	atoi_time(const char *nptr)
+mls_t	atoi_time(const char *nptr)
 {
 	unsigned int	result;
 	unsigned int	i;
@@ -50,5 +50,5 @@ useconds_t	atoi_time(const char *nptr)
 	result = 0;
 	while (ft_isdigit(nptr[i]))
 		result = result * 10 + (nptr[i++] - '0');
-	return ((useconds_t)(result * 1000));
+	return ((mls_t)(result));
 }
