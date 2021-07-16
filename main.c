@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 14:57:18 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/16 18:16:08 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/16 21:36:27 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	create_philosophers(t_all *all)
 	if (!philo || !g_forks)
 		my_strerror("malloc");
 	int i = -1;
+	while (++i < all->number_of_philo)
+		pthread_mutex_init(&g_forks[i], NULL);
+	pthread_mutex_init(&g_print, NULL);
+	i = -1;
 	while (++i < all->number_of_philo)
 	{
 		philo[i].number = i + 1;
