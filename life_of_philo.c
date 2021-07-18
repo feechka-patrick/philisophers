@@ -68,6 +68,8 @@ void	*check_death(void *ptr)
 void	*begin_amazing_life(void *ptr)
 {
 	int i = *(int *)ptr - 1;
+	if (i % 2 != 0)
+		myusleep(100);
 	g_philo[i].begin_of_starv = get_current_time();
 	pthread_detach(g_philo[i].thread);
 	while (1)
@@ -79,14 +81,14 @@ void	*begin_amazing_life(void *ptr)
 		g_philo[i].begin_of_starv = get_current_time();
 		
 		do_timestamp("is eating", g_philo[i].number);
-		myusleep(g_philo[i].time_to_eat * 1000);
+		myusleep(g_philo[i].time_to_eat);
 		
 		pthread_mutex_unlock(&(g_forks[g_philo[i].second_fork]));
 		pthread_mutex_unlock(&(g_forks[g_philo[i].first_fork]));
 		if (g_philo[i].time_eat_for_die != -1 && g_philo[i].time_eat_for_die != 0)
 			g_philo[i].time_eat_for_die--;
 		do_timestamp("is sleeping", g_philo[i].number);
-		myusleep(g_philo[i].time_to_sleep * 1000);
+		myusleep(g_philo[i].time_to_sleep);
 
 		do_timestamp("is thinking", g_philo[i].number);
 	}
@@ -102,10 +104,8 @@ void	run_life_of_philosophers(void)
 	i = -1;
 	while (++i < g_number_of_philo)
 	{
-		if (i % 2 != 0)
-			myusleep(100000);
 		pthread_create(&(g_philo[i].thread), NULL, begin_amazing_life, (void *)&(g_philo[i].number));
-		myusleep(100);
+		usleep(1000);
 	}
 	pthread_create(&(monitor), NULL, check_death, (void *)NULL);
 	pthread_join(monitor, NULL);
