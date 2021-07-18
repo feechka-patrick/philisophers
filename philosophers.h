@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 16:36:27 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/16 17:49:25 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:21:08 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,13 @@ typedef struct s_philo
 mls_t	g_time_of_begin;
 mutex_t	*g_forks;
 mutex_t	g_print;
-t_philo *philo;
+t_philo *g_philo;
 int	g_number_of_philo;
 
 int	my_atoi(const char *nptr);
 mls_t	atoi_time(const char *nptr);
 void	my_strerror(char *message);
+void	myusleep(mls_t time);
 void	run_life_of_philosophers(void);
 
 #endif

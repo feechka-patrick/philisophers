@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 15:22:06 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/16 17:57:23 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:24:52 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,14 @@ mls_t	atoi_time(const char *nptr)
 	while (ft_isdigit(nptr[i]))
 		result = result * 10 + (nptr[i++] - '0');
 	return ((mls_t)(result));
+}
+
+void	myusleep(mls_t time)
+{
+	while (time > 1000)
+	{
+		usleep(1000);
+		time -= 1000;
+	}
+	usleep(time);
 }

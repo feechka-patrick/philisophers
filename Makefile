@@ -6,12 +6,14 @@
 #    By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/13 17:18:01 by nmisfit           #+#    #+#              #
-#    Updated: 2021/07/16 16:04:04 by nmisfit          ###   ########.fr        #
+#    Updated: 2021/07/18 16:43:21 by nmisfit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = *.c
-	
+SRC = main.c\
+	life_of_philo.c\
+	lib_function.c\
+	error_handle.c\
 
 OBJ = $(SRC:.c=.o)
 
@@ -19,7 +21,7 @@ NAME = philo
 
 CC = gcc
 
-CFLAG = -g
+CFLAG = -Wall -Wextra -Werror -g
 
 LIB = -pthread
 
@@ -29,7 +31,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAG) $(LIB) $(OBJ) -o $(NAME)
 
 %.o: %.c 
-	$(CC) -c $(CFLAG) -o $@ $<
+	$(CC) $(CFLAG) -c $< -o $@ 
 
 clean:
 	rm -rf $(OBJ)

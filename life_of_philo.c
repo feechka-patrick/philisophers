@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 16:33:40 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/16 21:55:17 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:23:50 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,59 +35,60 @@ void	do_timestamp(char *activity, int X)
 void	*check_death(void *ptr)
 {
 	int	i;
-	mls_t	time_of_starv;
+	mls_t	time_of_starv = 0;
+	int	timer_eat = 0;
 
 	while (1)
 	{
 		i = -1;
+		if (g_philo[0].time_eat_for_die != -1)
+			timer_eat = 1;
 		while (++i < g_number_of_philo)
 		{
-			time_of_starv = 0;
-			if (philo[i].begin_of_starv != -1)
+			time_of_starv = get_current_time() - g_philo[i].begin_of_starv;
+			if (g_philo[i].begin_of_starv != -1 && time_of_starv >= g_philo[i].time_to_die)
 			{
-				time_of_starv = get_current_time() - philo[i].begin_of_starv;
-				if (philo[i].begin_of_starv != -1 && time_of_starv >= philo[i].time_to_die)
-				{
-					mls_t	timestamp = get_current_time() - g_time_of_begin;
-					// //
-					// pthread_mutex_lock(&g_print);
-					// printf("--> time_of_starv: %ld, time_to_die: %ld\n", time_of_starv, philo[i].time_to_die);
-					// printf("--> begin_of_starv: %ld\n", philo[i].begin_of_starv);
-					// pthread_mutex_unlock(&g_print);
-					// //
-					pthread_mutex_lock(&g_print);
-					printf("%ld: number %d %s\n", timestamp, i + 1, "died");
-					//free
-					exit(1); //заменить
-				}
+				mls_t	timestamp = get_current_time() - g_time_of_begin;
+				pthread_mutex_lock(&g_print);
+				printf("%ld: number %d %s\n", timestamp, i + 1, "died");
+				exit(1); //заменить
 			}
+			if (g_philo[i].time_eat_for_die != -1 && g_philo[i].time_eat_for_die != 0)
+				timer_eat = 0;
+		}
+		if (timer_eat == 1)
+		{
+			pthread_mutex_lock(&g_print);
+			break;
 		}
 	}
+	return (NULL);
 }
 
 void	*begin_amazing_life(void *ptr)
 {
 	int i = *(int *)ptr - 1;
-	philo[i].begin_of_starv = get_current_time();	
+	g_philo[i].begin_of_starv = get_current_time();
+	pthread_detach(g_philo[i].thread);
 	while (1)
 	{
-		pthread_mutex_lock(&(g_forks[philo[i].first_fork]));
-		do_timestamp("has taken a fork", philo[i].number);
-		pthread_mutex_lock(&(g_forks[philo[i].second_fork]));
-		do_timestamp("has taken a fork", philo[i].number);
+		pthread_mutex_lock(&(g_forks[g_philo[i].first_fork]));
+		do_timestamp("has taken a fork1", g_philo[i].number);
+		pthread_mutex_lock(&(g_forks[g_philo[i].second_fork]));
+		do_timestamp("has taken a fork2", g_philo[i].number);
+		g_philo[i].begin_of_starv = get_current_time();
 		
-		philo[i].begin_of_starv = -1;
-		do_timestamp("is eating", philo[i].number);
-		usleep(philo[i].time_to_eat * 1000);
+		do_timestamp("is eating", g_philo[i].number);
+		myusleep(g_philo[i].time_to_eat * 1000);
 		
-		pthread_mutex_unlock(&(g_forks[philo[i].second_fork]));
-		pthread_mutex_unlock(&(g_forks[philo[i].first_fork]));
-		philo[i].time_eat_for_die--;
-		philo[i].begin_of_starv = get_current_time();
-		do_timestamp("is sleeping", philo[i].number);
-		usleep(philo[i].time_to_sleep * 1000);
+		pthread_mutex_unlock(&(g_forks[g_philo[i].second_fork]));
+		pthread_mutex_unlock(&(g_forks[g_philo[i].first_fork]));
+		if (g_philo[i].time_eat_for_die != -1 && g_philo[i].time_eat_for_die != 0)
+			g_philo[i].time_eat_for_die--;
+		do_timestamp("is sleeping", g_philo[i].number);
+		myusleep(g_philo[i].time_to_sleep * 1000);
 
-		do_timestamp("is thinking", philo[i].number);
+		do_timestamp("is thinking", g_philo[i].number);
 	}
 }
 
@@ -101,9 +102,10 @@ void	run_life_of_philosophers(void)
 	i = -1;
 	while (++i < g_number_of_philo)
 	{
-		if (i % 2 == 0)
-			usleep(100000);
-		pthread_create(&(philo[i].thread), NULL, begin_amazing_life, (void *)&(philo[i].number));
+		if (i % 2 != 0)
+			myusleep(100000);
+		pthread_create(&(g_philo[i].thread), NULL, begin_amazing_life, (void *)&(g_philo[i].number));
+		myusleep(100);
 	}
 	pthread_create(&(monitor), NULL, check_death, (void *)NULL);
 	pthread_join(monitor, NULL);
