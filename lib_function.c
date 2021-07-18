@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 15:22:06 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/18 20:24:52 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:42:51 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,13 @@ mls_t	atoi_time(const char *nptr)
 
 void	myusleep(mls_t time)
 {
-	while (time > 1000)
+	mls_t	begin;
+
+	begin = get_current_time();
+	int diff = get_current_time() - begin;
+	while (diff < time)
 	{
 		usleep(1000);
-		time -= 1000;
+		diff =  get_current_time() - begin;
 	}
-	usleep(time);
 }

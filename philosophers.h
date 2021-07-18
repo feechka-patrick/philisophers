@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 16:36:27 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/18 20:21:08 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:33:37 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	g_number_of_philo;
 int	my_atoi(const char *nptr);
 mls_t	atoi_time(const char *nptr);
 void	my_strerror(char *message);
+mls_t	get_current_time(void);
 void	myusleep(mls_t time);
 void	run_life_of_philosophers(void);
 
