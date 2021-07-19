@@ -6,7 +6,7 @@
 /*   By: nmisfit <nmisfit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 15:22:06 by nmisfit           #+#    #+#             */
-/*   Updated: 2021/07/18 20:42:51 by nmisfit          ###   ########.fr       */
+/*   Updated: 2021/07/19 12:29:27 by nmisfit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,21 @@ static int	ft_isdigit(char c)
 
 int	my_atoi(const char *nptr)
 {
-	int	sign;
 	unsigned long	result;
 	unsigned int	i;
 
-	sign = 1;
 	i = 0;
-	if (nptr[i] == '-' || nptr[i] == '+')
-		sign *= (nptr[i++] == '-') ? -1 : 1;
 	result = 0;
 	while (ft_isdigit(nptr[i]))
 	{
 		result = result * 10 + (nptr[i++] - '0');
-		if (result > 2147483647 && sign == 1)
+		if (result > 2147483647)
 			return (-1);
-		if (result > 2147483648 && sign == -1)
-			return (0);
 	}
-	return ((int)(result * sign));
+	return ((int)(result));
 }
 
-mls_t	atoi_time(const char *nptr)
+t_mls	atoi_time(const char *nptr)
 {
 	unsigned int	result;
 	unsigned int	i;
@@ -50,18 +44,14 @@ mls_t	atoi_time(const char *nptr)
 	result = 0;
 	while (ft_isdigit(nptr[i]))
 		result = result * 10 + (nptr[i++] - '0');
-	return ((mls_t)(result));
+	return ((t_mls)(result));
 }
 
-void	myusleep(mls_t time)
+void	myusleep(t_mls time)
 {
-	mls_t	begin;
+	t_mls	begin;
 
 	begin = get_current_time();
-	int diff = get_current_time() - begin;
-	while (diff < time)
-	{
+	while (get_current_time() - begin < time)
 		usleep(1000);
-		diff =  get_current_time() - begin;
-	}
 }
