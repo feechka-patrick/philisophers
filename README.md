@@ -1,6 +1,8 @@
 # philosophers
 RUN : make
+<br>
 ./philo [number of philo] [time_to_die] [time_to_eat] [time_to_sleep] [(optional) number_of_times_each_philosopher_must_eat]]
+<br>
 <br>
 TEST : 
   - Test with ./philo 1 800 200 200, the philosopher should not eat and should die
